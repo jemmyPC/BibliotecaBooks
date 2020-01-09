@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Biblioteca.Book>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <button class="alert-info">@Html.ActionLink("Create New", "Create")</button>
+</p>
+@using (Html.BeginForm())
+{
+<p>
+    Find : @Html.TextBox("searchString")
+    <input type="submit" value="Search" />
+</p>
+}
+
+
+<table class="table jumbotron form-group-lg table-hover form-horizontal" style="background-color:lightpink"   >
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Autor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumPages)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edition)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.ISBN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Autor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumPages)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edition)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            | <button class="alert-info">
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+            </button> |
+            <button class="alert-info">
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+            </button>
+
+        </td>
+    </tr>
+    }
+
+</table>

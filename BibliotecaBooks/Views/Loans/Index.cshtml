@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Biblioteca.Loan>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+
+    <button class="alert-info"> @Html.ActionLink("Create New", "Create")</button>
+</p>
+
+<hr />
+<table class="table jumbotron text-center form-group-lg table-hover form-horizontal" style="background-color:lightpink">
+
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateFinish)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Book.ISBN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Book.Autor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Name)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateFinish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.Autor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Name)
+            </td>
+
+            <td>
+
+                <button class="alert-info">
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </button>|
+                <button class="alert-info">@Html.ActionLink("Back Book", "BackBook", item) </button>|
+            </td>
+        </tr>
+
+    }
+
+</table>

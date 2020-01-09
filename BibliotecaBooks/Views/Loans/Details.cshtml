@@ -1,0 +1,80 @@
+﻿@model Biblioteca.Loan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+
+
+</nav>
+<div class="jumbotron text-center form-group-lg table-hover form-horizontal" style="background-color:lightpink">
+
+        <h1>My Loans Details </h1>
+        <p>Check your Loans Details !</p>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.DateCreate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DateCreate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DateFinish)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DateFinish)
+            </dd>
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.ISBN)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ISBN)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Book.Autor)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Book.Autor)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status.status)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Status.status)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.User.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.User.Name)
+            </dd>
+
+
+        </dl>
+    </div>
+<p>
+     <button class="alert-info">@Html.ActionLink("Edit", "Edit", new { id = Model.Id })</button> 
+     <button class="alert-info">@Html.ActionLink("Back to List", "Index")</button>
+</p>

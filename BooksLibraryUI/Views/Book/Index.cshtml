@@ -1,0 +1,236 @@
+﻿@model List<Models.Model.Book>
+
+
+<h1> Books List </h1>
+
+<div class="table-responsive">
+    <table class="table" id="tabla-contenido">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ISBN</th>
+                <th>Autor</th>
+                <th>Title</th>
+                <th>NumPages</th>
+                <th>Edition</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Edit</th>
+                <th>Details</th>
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<div class="modal modal-primary fade" id="agregarModal" tabindex="-1" role="dialog" aria-labelledby="agregarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="agregarModalLabel">Nuevo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalcuerpo"></div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary " id="btnGuardarModal">Guardar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-success fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="editarModalLabel">Edith</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body" id="modaleditarcuerpo">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary " id="btnEditarModal">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        // Globals
+        let table;
+
+        window.onload = function () {
+           document.getElementById("btnGuardarModal").addEventListener("click", function () { Guardar(); })
+           document.getElementById("btnEditarModal").addEventListener("click", function () { Editar(); })
+        }
+
+        // Limpiar campos del modal
+        function LimpiarModales() {
+            const bodies = document.querySelectorAll("modal-body");
+            for (i = 0; i < bodies.length; i++) { bodies[i].innerHTML = ""; }
+        }
+
+
+// Abrir Modal Nuevo
+        function ModalAbrir() {
+            fetch("@Url.Action("Agregar", "Book")", {
+                method: "GET"
+            }).then(function (response) {
+                if (response.ok) {
+                    response.text().then(function (text) {
+                        LimpiarModales();
+                        document.querySelector("#modalcuerpo").innerHTML = text;
+                        $("#agregarModal").modal("show");
+                    })
+                }
+            });
+        }
+             // Abrir Modal Editar
+        function MostrarEditar(id) {
+            fetch("@Url.Action("Edith","Book")/" + id, {
+                method: "GET"
+            }).then(function (response) {
+                if (response.ok) {
+                    response.text().then(function (text) {
+                       LimpiarModales();
+                        document.querySelector("#modaleditarcuerpo").innerHTML = text;
+                        $("#editarModal").modal("show");
+
+                    })
+                }
+            });
+        }
+
+        // Editar Data Guardar
+        function Editar() {
+            const data = {};
+            data["Id"] = $("#Id").val();
+            data["Description"] = $("#Description").val();
+
+            fetch("https://localhost:44316/api/book", {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function (response) {
+                if (response.ok) {
+                    table.ajax.reload(Callback);
+                    $("#editarModal").modal("hide");
+                }
+            });
+        }
+
+
+  // Guardar Data Nuevo
+        function Guardar() {
+            const data = {};
+            data["ISBN"] = document.querySelector("#ISBN").value;
+            data["Autor"] = document.querySelector("#Autor").value;
+            data["Title"] = document.querySelector("#Title").value;
+            data["NumPages"] = document.querySelector("#NumPages").value;
+            data["Edition"] = document.querySelector("#Edition").value;
+            data["Description"] = document.querySelector("#Description").value;
+            data["Quantity"] = document.querySelector("#Quantity").value;
+
+            fetch("https://localhost:44316/api/book", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function (response) {
+                if (response.ok) {
+                   // table.ajax.reload(Callback);
+                    $("#agregarModal").modal("hide");
+                }
+            });
+
+        }
+
+        function Callback() {
+            const buttons = document.querySelectorAll(".editar-modelo");
+            for (i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", function () {
+                    MostrarEditar(this.dataset.id);
+                });
+            }
+        };
+
+        $(document).ready(function () {
+            var table = $('#tabla-contenido').DataTable({
+                ajax:
+                {
+                    url: 'https://localhost:44316/api/book',
+                    type: 'GET',
+                    datatype: 'JSON',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'id'},
+                    { data: 'isbn' },
+                    { data: 'autor' },
+                    { data: 'title' },
+                    { data: 'numPages' },
+                    { data: 'edition' },
+                    { data: 'description' },
+                    { data: 'quantity' },
+
+                    {
+                        render: function (data, type, row) {
+                            return `<a class= btn btn-primary onClick="MostrarEditar(${row.id})"> Editar</a>`
+                        },
+                    },
+                    {
+                        render: (data, type, row) => {
+                            return `<a class="btn btn-info" href="User/Details/${row.id}">Details</a>`
+                        },
+                    }
+
+                ],
+
+                select: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        text: 'Nuevo',
+                        action: function () {
+                            ModalAbrir();
+                        }
+                    },
+                    'copy', 'excel', 'pdf',
+                    {
+                        text: 'Eliminar',
+                        action: function () {
+
+                            var rows = table.rows({ selected: true }).data();
+                            var ids = [];
+                            for (var x = 0; x < rows.length; x++) {
+                                ids.push(rows[x].id)
+                            }
+                            //
+                            bootbox.confirm("Deseas eliminar este elemento?", function (IsConfirmed) {
+                                if (IsConfirmed) {
+                                    // eliminar elemento
+                                    $.ajax({
+                                        contentType: 'application/json',
+                                        url: 'http://localhost:57024/api/book',
+
+                                        data: '[' + ids.toString() + ']',
+                                        type: 'DELETE',
+                                        success: () => {
+                                            table.ajax.reload();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

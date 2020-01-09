@@ -1,0 +1,187 @@
+﻿@model Biblioteca.User
+
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+
+</nav>
+<div class="table jumbotron center form-group-lg table-hover form-horizontal" style="background-color:lightpink"   >
+    <h1>My User Details </h1>
+    <p>Check your User Details and loands !</p>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CURP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CURP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+
+    </dl>
+</div>
+
+
+
+
+<button data-toggle="collapse" data-target="#demo"> All History Loans </button>
+<button data-toggle="collapse" data-target="#debs"> Loans with debs </button>
+
+<div id="demo" class="collapse">
+    <hr />
+
+    <table class="table jumbotron text-center">
+        <tr>
+            <th>
+                Date Creation
+            </th>
+            <th>
+                Date Finish
+            </th>
+            <th>
+                Books
+            </th>
+
+            <th>
+                ISBN
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Loans)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateFinish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Autor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="debs" class="collapse">
+    <hr />
+
+    <table class="table jumbotron text-center" style="background-color:lightpink">
+        <tr>
+            <th>
+                Date Creation
+            </th>
+            <th>
+                Date Finish
+            </th>
+            <th>
+                Books
+            </th>
+
+            <th>
+                ISBN
+            </th>
+            <th>
+                Author
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Loans1)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateFinish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Book.Autor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<hr />
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
