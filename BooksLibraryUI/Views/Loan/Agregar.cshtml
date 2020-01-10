@@ -1,30 +1,55 @@
 ﻿@model Models.Loan
 
+
+
 @{
     ViewData["Title"] = @ViewData["Accion"] + " Loan";
 }
 
 <div class="card">
-    <div class="card-header" >
-       
-    </div>
+    <div class="card-header">
 
-   
+    </div>
+    @{
+
+        List<SelectListItem> Users = new List<SelectListItem>();
+        var users = Model.users;
+        if (users != null)
+        {
+            foreach (var usr in users)
+            {
+                Users.Add(new SelectListItem { Text = usr.Name, Value = usr.ID.ToString() });
+            }
+        }
+
+        List<SelectListItem> Books = new List<SelectListItem>();
+        List<SelectListItem> ISBN = new List<SelectListItem>();
+        var books = Model.books;
+        if (books != null)
+        {
+            foreach (var book in books)
+            {
+                Books.Add(new SelectListItem { Text = book.Id.ToString(), Value = book.Id.ToString() });
+                ISBN.Add(new SelectListItem { Text = book.ISBN.ToString(), Value = book.ISBN.ToString() });
+            }
+        }
+    }
+
     <div class="form-group">
         <label asp-for="UserID"></label>
-        <input asp-for="UserID" />
+        @Html.DropDownListFor(model => model.User.Name, Users, "-- Select Your User--")
         <span asp-validation-for="UserID" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="IdBook"></label>
-        <input  asp-for="IdBook" />
+        @Html.DropDownListFor(model => model.Book.Title, Books, "-- Select Id Book --")
         <span asp-validation-for="IdBook" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="ISBN"></label>
-        <input  asp-for="ISBN" />
+        @Html.DropDownListFor(model => model.Book.ISBN, ISBN, "-- Select ISBN --")
         <span asp-validation-for="ISBN" class="text-danger"></span>
     </div>
 

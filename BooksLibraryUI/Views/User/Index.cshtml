@@ -7,7 +7,6 @@
     <table class="table" id="tabla-contenido">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>LastName</th>
                 <th>CURP</th>
@@ -144,7 +143,7 @@
                 body: JSON.stringify(data)
             }).then(function (response) {
                 if (response.ok) {
-                    //table.ajax.reload(Callback);
+                    table.ajax.reload(Callback);
                     $("#agregarModal").modal("hide");
                 }
             });
@@ -172,7 +171,6 @@
                         dataSrc: ''
                     },
                         columns: [
-                            { data: 'id' },
                             { data: 'name' },
                             { data: 'lastName' },
                             { data: 'curp' },

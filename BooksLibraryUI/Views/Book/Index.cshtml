@@ -7,7 +7,6 @@
     <table class="table" id="tabla-contenido">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>ISBN</th>
                 <th>Autor</th>
                 <th>Title</th>
@@ -170,7 +169,6 @@
                     dataSrc: ''
                 },
                 columns: [
-                    { data: 'id'},
                     { data: 'isbn' },
                     { data: 'autor' },
                     { data: 'title' },
@@ -186,7 +184,7 @@
                     },
                     {
                         render: (data, type, row) => {
-                            return `<a class="btn btn-info" href="User/Details/${row.id}">Details</a>`
+                            return `<a class="btn btn-info" href="Book/Details/${row.id}">Details</a>`
                         },
                     }
 
@@ -201,34 +199,7 @@
                             ModalAbrir();
                         }
                     },
-                    'copy', 'excel', 'pdf',
-                    {
-                        text: 'Eliminar',
-                        action: function () {
-
-                            var rows = table.rows({ selected: true }).data();
-                            var ids = [];
-                            for (var x = 0; x < rows.length; x++) {
-                                ids.push(rows[x].id)
-                            }
-                            //
-                            bootbox.confirm("Deseas eliminar este elemento?", function (IsConfirmed) {
-                                if (IsConfirmed) {
-                                    // eliminar elemento
-                                    $.ajax({
-                                        contentType: 'application/json',
-                                        url: 'http://localhost:57024/api/book',
-
-                                        data: '[' + ids.toString() + ']',
-                                        type: 'DELETE',
-                                        success: () => {
-                                            table.ajax.reload();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    }
+                    'copy', 'excel', 'pdf'
                 ]
             });
         });

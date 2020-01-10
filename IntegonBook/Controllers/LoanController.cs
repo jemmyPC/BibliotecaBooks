@@ -20,10 +20,12 @@ namespace IntegonBook.Controllers
     {
         private readonly AppDbContext _appDb;
         private readonly IRepository<Loan> _repos;
+        private readonly IRepository<User> _reposU;
 
-        public LoanController(IRepository<Loan> repository, AppDbContext appDb)
+        public LoanController(IRepository<Loan> repository, IRepository<User> reposU, AppDbContext appDb)
         {
             _repos = repository;
+            _reposU = reposU;
             _appDb = appDb;
         }
 
@@ -49,28 +51,29 @@ namespace IntegonBook.Controllers
         public ActionResult PostLoan([FromBody] Loan loan)
         {
 
-            try {
+            try
+            {
 
 
                 var user = _appDb.User.Where(u => u.ID == loan.UserID).First();
                 var book = _appDb.Book.Where(b => b.Id == loan.IdBook).First();
 
-                if (user.Quantity >= 3)
+                if (user.Quantity > 2)
                 {
                     return BadRequest("Tiene 3 libros prestados ");
                 }
-                if (book.Quantity <= 1)
+                if (book.Quantity - loan.Quantity > 1)
                 {
                     return BadRequest("No Disponible para prestamo");
 
                 }
 
-                if (user.IdStatus >= 4)
+                if (user.IdStatus == 4)
                 {
                     return BadRequest("No Disponible para prestamo");
 
                 }
-                if (user.IdStatus >= 2)
+                if (user.IdStatus == 2)
                 {
                     return BadRequest("Tiene deudas por Pagar");
 
@@ -87,6 +90,9 @@ namespace IntegonBook.Controllers
                 loans.DateCreate = DateTime.Now;
                 loans.StatusId = 9;
                 _repos.Insert(loans);
+                user.Quantity = user.Quantity + loan.Quantity;
+                _reposU.Update(user, user.ID);
+
 
                 return Ok();
             }

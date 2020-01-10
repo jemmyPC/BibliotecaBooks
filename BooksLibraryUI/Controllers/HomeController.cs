@@ -17,7 +17,7 @@ namespace BooksLibraryUI.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "This is a New Aplication for Integon Library";
 
             return View();
         }

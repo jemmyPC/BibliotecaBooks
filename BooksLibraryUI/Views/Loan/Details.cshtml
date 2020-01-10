@@ -4,69 +4,35 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<title> Detail Page </title>
 
-<div>
-    <h4>Loan</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateCreate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateCreate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateFinish)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateFinish)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.StatusId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.StatusId)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdBook)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdBook)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ISBN)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ISBN)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+<header>
+    <h1> Detail Page for @Model.User </h1>
+</header>
+
+<body>
+    <div class="jumbotron">
+        <div class="jumbotron jumbotron-fluid" style="width:700px" margin="45">
+            <div class="card">
+                <img class="card-img-center" src="https://www.incimages.com/uploaded_files/image/970x450/getty_883231284_200013331818843182490_335833.jpg">
+                <div class="card-img-top">
+                    <h4 class="card-title"> DateCreate : @Model.DateCreate</h4>
+                    <h4 class="card-text"> DateFinish: @Model.DateFinish</h4>
+                    <h4 class="card-text"> Quantity: @Model.Quantity</h4>
+                    <h4 class="card-text"> StatusId: @Model.StatusId</h4>
+                    <h4 class="card-text"> IdBook: @Model.IdBook</h4>
+                    <h4 class="card-text"> ISBN: @Model.ISBN</h4>
+                    <h4 class="card-text"> Quantity: @Model.Quantity</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+<footer>
+    <a asp-action="Index" class="jumbotron jumbotron-fluid" style="color:lightpink">Back to List</a>
+</footer>
+        

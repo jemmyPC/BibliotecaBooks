@@ -7,7 +7,6 @@
     <table class="table" id="tabla-contenido">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>DateCreate</th>
                 <th>DateFinish</th>
                 <th>ISBN</th>
@@ -50,7 +49,7 @@
 
         window.onload = function () {
             document.getElementById("btnGuardarModal").addEventListener("click", function () { Guardar(); })
-            document.getElementById("").addEventListener("click", function () { Guardar(); })
+        
         }
 
         // Lipiar campos del modal
@@ -78,7 +77,31 @@
                 }
             });
         }
-    
+
+
+    // Guardar Data Nuevo
+    function Guardar() {
+        const data = {};
+        data["IdBook"] = document.querySelector("#IdBook").value;
+        data["UserID"] = document.querySelector("#UserID").value;
+        
+
+        fetch("https://localhost:44316/api/loan", {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(function (response) {
+            if (response.ok) {
+                // table.ajax.reload(Callback);
+                $("#agregarModal").modal("hide");
+            }
+        });
+
+    }
+
+
+
+
 // Abrir Modal Crear
     function deliver() {
         const data = {};
@@ -104,13 +127,13 @@
                     dataSrc: ''
                 },
                 columns: [
-                    { data: 'id' },
+                   
                     { data: 'dateCreate' },
                     { data: 'dateFinish' },
                     { data: 'isbn' },
-                    { data: 'book' },
-                    { data: 'status' },
-                    { data: 'user' },
+                    { data: 'idBook' },
+                    { data: 'statusId' },
+                    { data: 'userID' },
 
                       {
                                 render: (data, type, row) => {
@@ -134,37 +157,8 @@
                             ModalAbrir();
                         }
                     },
-                    'copy', 'excel', 'pdf',
-                    {
-                        text: 'Eliminar',
-                        action: function () {
+                    'copy', 'excel', 'pdf'
 
-                            var rows = table.rows({ selected: true }).data();
-                            var ids = [];
-                            for (var x = 0; x < rows.length; x++) {
-                                ids.push(rows[x].id)
-                            }
-                            //
-                            bootbox.confirm("Deseas eliminar este elemento?", function (IsConfirmed) {
-                                if (IsConfirmed) {
-                                    // eliminar elemento
-                                    $.ajax({
-                                        contentType: 'application/json',
-                                        url: 'https://localhost:44316/api/loan/deleteloan',
-
-                                        data: '[' + ids.toString() + ']',
-                                        type: 'DELETE',
-                                        success: () => {
-                                            table.ajax.reload();
-                                        }
-                                    });
-                                }
-                            });
-
-
-                            console.log(ids);
-                        }
-                    }
                 ]
             });
         });

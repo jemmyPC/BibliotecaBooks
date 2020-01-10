@@ -42,22 +42,18 @@ namespace IntegonBook.Controllers
         {
             try
             {
-                var repeatedISBN = _repos.GetAll().Where(u => u.ISBN == book.ISBN).Count();
-                var CountISBN = _repos.GetAll().Where(u => u.Quantity == book.Quantity &&(u.ISBN == book.ISBN)).Count();
+                var repeatedISBN = _repos.GetAll().Where(u => u.ISBN == book.ISBN);
+                int quantityBook = 0;
 
-                if (repeatedISBN >= 1)
-                {
-
-                    return BadRequest("ISBN existing ");
+                foreach (Book b in repeatedISBN){
+                    quantityBook = (int)b.Quantity;
                 }
-                if ( CountISBN >= 10)
-                {
-                    return BadRequest("There is to much Books whit the same ISBN");
-                }
-                if ( book.Quantity >= 10)
+                int total = quantityBook + (int)book.Quantity;
+                if (total > 10)
                 {
                     return BadRequest("There is to much Books Only can be 10");
                 }
+                    
 
                 if (ModelState.IsValid)
                 {
@@ -73,7 +69,14 @@ namespace IntegonBook.Controllers
                         Quantity = book.Quantity
                     };
 
-                    _repos.Insert(books);
+                    if(repeatedISBN.Count() == 0){
+                        _repos.Insert(books);
+                    }else{
+                        Book b = repeatedISBN.FirstOrDefault();
+                        b.Quantity = total;
+                        _repos.Update(b, b.Id);
+                    }
+                        
                     return Ok();
                 }
                 return Ok();

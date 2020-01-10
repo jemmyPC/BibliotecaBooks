@@ -5,17 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.Model;
 using RepositoryPattern.Interfaces;
 
 namespace BooksLibraryUI.Controllers
 {
     public class LoanController : Controller
     {
-        private readonly IRepository<Loan> _repos;
-        public LoanController(IRepository<Loan> repository)
+        private readonly IRepository<User> _reposU;
+        private readonly IRepository<Book> _reposB;
+        private readonly IRepository<Loan> _reposL;
+        public LoanController(IRepository<Loan> repository, IRepository<User> reposU, IRepository<Book> reposB)
         {
-            _repos = repository;
+            _reposL = repository;
+            _reposU = reposU;
+            _reposB = reposB;
         }
+
+
         // GET: Loan
         public ActionResult Index()
         {
@@ -24,17 +31,23 @@ namespace BooksLibraryUI.Controllers
 
 
         // GET: Loan/Create
+        // GET: Loan/Create
         public IActionResult Agregar()
         {
-
             ViewData["Accion"] = "Agregar";
-            return PartialView("Agregar", new Loan());
+            Loan new_loan = new Loan();
+            new_loan.users = _reposU.GetAll();
+            new_loan.books = _reposB.GetAll();
+            return PartialView("Agregar", new_loan);
         }
+
+
+
         public IActionResult Details(int id)
         {
             ViewData["Accion"] = "Details";
 
-            Loan loan = _repos.GetById(id);
+            Loan loan = _reposL.GetById(id);
             Loan model = new List<Loan>.Enumerator().Current;
 
             return PartialView("Details", loan);

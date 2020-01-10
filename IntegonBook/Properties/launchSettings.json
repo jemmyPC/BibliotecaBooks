@@ -13,7 +13,7 @@
       "commandName": "IISExpress",
       "launchUrl": "api/values",
       "environmentVariables": {
-        "CONNSTRING": "data source=WSICXDKPDEV073\\SQLEXPRESS01;initial catalog=Biblioteca;integrated security=True;",
+        "CONNSTRING": "data source=DESKTOP-NSKT08G\\SQLEXPRESS;initial catalog=Biblioteca;integrated security=True;",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

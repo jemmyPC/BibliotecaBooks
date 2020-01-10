@@ -4,75 +4,32 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<title> Detail Page </title>
+  
+<header>
+    <h1>   Detail Page for @Model.Name </h1>
+</header>
+    <body>
+        <div class="jumbotron">
+            <div class="jumbotron jumbotron-fluid" style="width:700px" margin="45">
+                <div class="card">
+                    <img class="card-img-center" src="https://img.ecartelera.com/noticias/42300/42348-c.jpg" alt="Card image">
+                    <div class="card-img-top">
+                        <h4 class="card-title">Name : @Model.Name </h4>
+                        <h4 class="card-text">Last Name: @Model.LastName</h4>
+                        <h4 class="card-text">User Name: @Model.UserName</h4>
+                        <h4 class="card-text">CURP: @Model.CURP</h4>
+                        <h4 class="card-text">EMAIL: @Model.Email</h4>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ID)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CURP)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CURP)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.IdStatus)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.IdStatus)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+    <footer>
+        <a asp-action="Index" class="jumbotron jumbotron-fluid" style="color:lightpink">Back to List</a>
+    </footer>
