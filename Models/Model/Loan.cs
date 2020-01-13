@@ -12,18 +12,13 @@ namespace Models
         [Key]
         public int Id { get; set; }
         public int UserID { get; set; }
-
-
         public DateTime? DateCreate { get; set; }
-
         public DateTime? DateFinish { get; set; }
-
         public int? Quantity { get; set; }
-
         public int? StatusId { get; set; }
         public int? Price { get; set; }
         public int IdBook { get; set; }
-        public int? ISBN { get; set; }
+        public string Title { get; set; }
         public IEnumerable<Book> books;
         public IEnumerable<User> users;
 

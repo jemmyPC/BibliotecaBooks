@@ -38,7 +38,7 @@ namespace IntegonBook.Controllers
 
         //This Method Create a new Book
         [HttpPost]
-        public ActionResult PostBook([FromBody] Book book)
+        public String PostBook([FromBody] Book book)
         {
             try
             {
@@ -51,8 +51,8 @@ namespace IntegonBook.Controllers
                 int total = quantityBook + (int)book.Quantity;
                 if (total > 10)
                 {
-               
-                    return BadRequest("There is to much Books Only can be 10");
+                    return "{\"Quantity\":\"There is to much Books Only can be 10\"}";
+                    
                 }
                     
 
@@ -78,14 +78,14 @@ namespace IntegonBook.Controllers
                         b.Quantity = total;
                         _repos.Update(b, b.Id);
                     }
-                        
-                    return Ok();
+
+                    return "{\"OK\":\"OK\"}";
                 }
-                return Ok();
+                return "{\"OK\":\"OK\"}";
             }
             catch (Exception err)
             {
-              return BadRequest(err.Message);
+                return "{\"OK\":\""+err.Message+"\"}";
             }
         }
 

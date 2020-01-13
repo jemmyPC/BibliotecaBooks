@@ -49,7 +49,7 @@ namespace IntegonBook.Controllers
         //This Method Create a new Loan
         [HttpPost]
 
-        public ActionResult PostLoan([FromBody] Loan loan)
+        public String PostLoan([FromBody] Loan loan)
         {
 
             try
@@ -59,49 +59,52 @@ namespace IntegonBook.Controllers
 
                 if (user.Quantity > 2)
                 {
-                    return BadRequest("Tiene 3 libros prestados ");
+                    return "{\"Loan\":\"Tiene 3 libros prestados\"}";
                 }
-                if (book.Quantity - loan.Quantity > 1)
+                if (book.Quantity - 1 < 1)
                 {
-                    return BadRequest("No Disponible para prestamo");
-
+                    return "{\"Loan\":\"No Disponible para prestamo\"}";
                 }
 
                 if (user.IdStatus == 4)
                 {
-                    return BadRequest("No Disponible para prestamo");
+                    return "{\"Loan\":\"DSGDFYH\"}";
 
                 }
                 if (user.IdStatus == 2)
                 {
-                    return BadRequest("Tiene deudas por Pagar");
+                    return "{\"Loan\":\"Tiene deudas por Pagar\"}";
 
                 }
 
                 Loan loans = new Loan
                 {
-                    //  Id = loan.Id,
+                      Id = loan.Id,
                      UserID = loan.UserID,
                     IdBook = loan.IdBook,
-                    ISBN = loan.ISBN,
-                };
+                    Quantity = 1,
+                    Title = book.Title
+
+
+
+
+    };
 
                 loans.DateCreate = DateTime.Now;
                 loans.StatusId = 9;
                 _repos.Insert(loans);
 
-                user.Quantity = user.Quantity + loan.Quantity;
-                book.Quantity = book.Quantity - loan.Quantity;
+                user.Quantity = user.Quantity + loans.Quantity;
+                book.Quantity = book.Quantity - loans.Quantity;
                 _reposU.Update(user, user.ID);
                 _reposB.Update(book, book.Id);
 
-                return Ok();
+                return "{\"OK\":\"OK\"}";
             }
-
 
             catch (Exception err)
             {
-                return BadRequest(err.Message);
+                return "{\"OK\":\"" + err.Message + "\"}";
             }
         }
 

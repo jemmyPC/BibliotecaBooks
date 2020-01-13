@@ -76,9 +76,12 @@
             for (i = 0; i < bodies.length; i++) { bodies[i].innerHTML = ""; }
         }
 
-
+        function LimpiarErrors() {
+            document.getElementById("errQuantity").innerText = "";
+ 
+        }
 // Abrir Modal Nuevo
-        function ModalAbrir() {
+        function ModalAbrir(action) {
             fetch("@Url.Action("Agregar", "Book")", {
                 method: "GET"
             }).then(function (response) {
@@ -86,7 +89,7 @@
                     response.text().then(function (text) {
                         LimpiarModales();
                         document.querySelector("#modalcuerpo").innerHTML = text;
-                        $("#agregarModal").modal("show");
+                        $("#agregarModal").modal(action);
                     })
                 }
             });
@@ -142,12 +145,21 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(function (response) {
-                if (response.ok) {
-                   // table.ajax.reload(Callback);
-                    $("#agregarModal").modal("hide");
-                }
-            });
 
+
+                response.json().then(function (msg) {
+                    if (msg["OK"] == "OK") {
+
+                        ModalAbrir("hide");
+                    } else {
+                        LimpiarErrors();
+                        for (var k in msg) {
+                            document.getElementById("err" + k).innerText = msg[k];
+                        }
+                    }
+                });
+            });
+            
         }
 
         function Callback() {
@@ -196,7 +208,7 @@
                     {
                         text: 'Nuevo',
                         action: function () {
-                            ModalAbrir();
+                            ModalAbrir("show");
                         }
                     },
                     'copy', 'excel', 'pdf'

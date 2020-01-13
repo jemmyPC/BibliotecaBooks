@@ -49,8 +49,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control"  placeholder="Only can be 10 Books"/>
+                <input asp-for="Quantity" class="form-control" placeholder="Only can be 10 Books" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
+                <div id="errQuantity"></div>
             </div>
           
         </form>

@@ -9,7 +9,7 @@
             <tr>
                 <th>DateCreate</th>
                 <th>DateFinish</th>
-                <th>ISBN</th>
+                <th>Title</th>
                 <th>BOOK</th>
                 <th>STATUS</th>
                 <th>USER</th>
@@ -64,7 +64,7 @@
 
 
 // Abrir Modal Crear
-        function ModalAbrir() {
+        function ModalAbrir(action) {
             fetch("@Url.Action("Agregar", "Loan")", {
                 method: "GET"
             }).then(function (response) {
@@ -72,7 +72,7 @@
                     response.text().then(function (text) {
                         LimpiarModales();
                         document.querySelector("#modalcuerpo").innerHTML = text;
-                        $("#agregarModal").modal("show");
+                        $("#agregarModal").modal(action);
                     })
                 }
             });
@@ -81,21 +81,28 @@
 
     // Guardar Data Nuevo
     function Guardar() {
-        
-        const data = {};
-        data["Name"] = document.querySelector("#Name").value;
-        data["ISBN"] = document.querySelector("#ISBN").value;
-        
+   
+        var data = {};
+        data["UserID"] = document.getElementById("User").value;
+        data["IdBook"] = document.getElementById("Book").value;
 
+        
         fetch("https://localhost:44316/api/loan", {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         }).then(function (response) {
-            if (response.ok) {
-                // table.ajax.reload(Callback);
-                $("#agregarModal").modal("hide");
-            }
+
+            response.json().then(function (msg) {
+                if (msg["OK"] == "OK") {
+
+                    ModalAbrir("hide");
+                } else {
+                    for (var k in msg) {
+                        document.getElementById("err" + k).innerText = msg[k];
+                    }
+                }
+            });
         });
 
     }
@@ -104,9 +111,10 @@
 
 
 // Abrir Modal Crear
-    function deliver() {
-        const data = {};
-        data["ID"] = document.querySelector("#Id").value;
+
+    function deliver(row) {
+        var data = {"Id":row};
+
            fetch("https://localhost:44316/api/loan" , {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
@@ -131,7 +139,7 @@
                    
                     { data: 'dateCreate' },
                     { data: 'dateFinish' },
-                    { data: 'isbn' },
+                    { data: 'title' },
                     { data: 'idBook' },
                     { data: 'statusId' },
                     { data: 'userID' },
@@ -155,7 +163,7 @@
                     {
                         text: 'Nuevo',
                         action: function () {
-                            ModalAbrir();
+                            ModalAbrir("show");
                         }
                     },
                     'copy', 'excel', 'pdf'

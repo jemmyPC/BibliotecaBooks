@@ -23,31 +23,29 @@
         }
 
         List<SelectListItem> Books = new List<SelectListItem>();
-        List<SelectListItem> ISBN = new List<SelectListItem>();
+
         var books = Model.books;
         if (books != null)
         {
             foreach (var book in books)
             {
-                Books.Add(new SelectListItem { Text = book.Id.ToString(), Value = book.Id.ToString() });
-                ISBN.Add(new SelectListItem { Text = book.ISBN.ToString(), Value = book.ISBN.ToString() });
+                Books.Add(new SelectListItem { Text = book.Title.ToString(), Value = book.Id.ToString() });
             }
         }
     }
 
     <div class="form-group">
-        <label asp-for="User.Name"></label>
-        @Html.DropDownListFor(model => model.User.Name, Users, "-- Select Your User--")
-        <span asp-validation-for="User.Name" class="text-danger"></span>
+        <label asp-for="User"></label>
+        @Html.DropDownListFor(a => a.User, Users, "-- Select Your User--")
     </div>
 
 
     <div class="form-group">
-        <label asp-for="ISBN"></label>
-        @Html.DropDownListFor(model => model.Book.ISBN, ISBN, "-- Select ISBN --")
-        <span asp-validation-for="ISBN" class="text-danger"></span>
+        <label asp-for="Book"></label>
+        @Html.DropDownListFor(a => a.Book, Books, "-- Select Title --")
     </div>
-
+    <div id="errLoan">
+    </div>
 
 </div>
 
