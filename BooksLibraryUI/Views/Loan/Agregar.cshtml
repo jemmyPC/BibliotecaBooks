@@ -36,16 +36,11 @@
     }
 
     <div class="form-group">
-        <label asp-for="UserID"></label>
+        <label asp-for="User.Name"></label>
         @Html.DropDownListFor(model => model.User.Name, Users, "-- Select Your User--")
-        <span asp-validation-for="UserID" class="text-danger"></span>
+        <span asp-validation-for="User.Name" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="IdBook"></label>
-        @Html.DropDownListFor(model => model.Book.Title, Books, "-- Select Id Book --")
-        <span asp-validation-for="IdBook" class="text-danger"></span>
-    </div>
 
     <div class="form-group">
         <label asp-for="ISBN"></label>

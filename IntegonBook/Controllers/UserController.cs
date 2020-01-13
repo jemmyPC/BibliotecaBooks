@@ -42,7 +42,7 @@ namespace IntegonBook.Controllers
 
         //This Method Create a new User
         [HttpPost]
-        public ActionResult PostUser([FromBody] User user)
+        public String PostUser([FromBody] User user)
         {
             try {
                 
@@ -51,12 +51,12 @@ namespace IntegonBook.Controllers
 
                 if (repeatedCURP >= 1)
                 {
-                    return BadRequest("There is a Existing CURP");
+                    return "{\"CURP\":\"There is a Existing CURP\"}";
                 }
                 if (repeatedUserName >= 1)
                 {
 
-                    return BadRequest("There is a UserName Existing");
+                    return "{\"UserName\":\"There is a UserName Existing\"}";
 
                 }
                     if (ModelState.IsValid)
@@ -73,15 +73,15 @@ namespace IntegonBook.Controllers
 
                         };
                         _repos.Insert(users);
-                        return Ok();
+                        return "{\"OK\":\"OK\"}";
                     }
               
              }
             catch (Exception err)
             {
-                return BadRequest(err.Message);
+                return err.Message;
             }
-            return Ok();
+            return "{\"OK\":\"OK\"}";
         }
        
 

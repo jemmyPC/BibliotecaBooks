@@ -10,7 +10,6 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
       "environmentVariables": {
         "CONNSTRING": "data source=DESKTOP-NSKT08G\\SQLEXPRESS;initial catalog=Biblioteca;integrated security=True;",
         "ASPNETCORE_ENVIRONMENT": "Development"

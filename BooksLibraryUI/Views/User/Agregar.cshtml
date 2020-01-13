@@ -13,62 +13,48 @@
         <form asp-action="Agregar">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            
-
-
-
-
-
 
 
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @placeholder = "Your Name" } })
-                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
             </div>
+            <div id="errName"></div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Your Last name" } })
-                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" />
             </div>
+            <div id="errLastName"></div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.CURP, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CURP, new { htmlAttributes = new { @class = "form-control", @placeholder = "Not Repeat Existing CURP!" } })
-                    @Html.ValidationMessageFor(model => model.CURP, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="CURP"></label>
+                <input asp-for="CURP" class="form-control" placeholder="Needs to be an Email Format" />
+                <span asp-validation-for="CURP" class="text-danger"></span>
             </div>
+            <div id="errCURP"></div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2", Type = "Email" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", Type = "Email", @placeholder = "Needs to be an Email Format" } })
-                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+            <div id="errEmail"></div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Not Repeat an Existing UserName" } })
-                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" placeholder="Not Repeat an Existing UserName" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
+            <div id="errUserName"></div>
+
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                </div>
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" placeholder="Not Repeat an Existing UserName" />
             </div>
+            <div id="errPassword"></div>
 
         </form>
     </div>

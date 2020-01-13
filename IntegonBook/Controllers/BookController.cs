@@ -51,6 +51,7 @@ namespace IntegonBook.Controllers
                 int total = quantityBook + (int)book.Quantity;
                 if (total > 10)
                 {
+               
                     return BadRequest("There is to much Books Only can be 10");
                 }
                     
@@ -71,7 +72,8 @@ namespace IntegonBook.Controllers
 
                     if(repeatedISBN.Count() == 0){
                         _repos.Insert(books);
-                    }else{
+                    }
+                    else {
                         Book b = repeatedISBN.FirstOrDefault();
                         b.Quantity = total;
                         _repos.Update(b, b.Id);

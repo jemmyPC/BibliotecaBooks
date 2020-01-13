@@ -81,9 +81,10 @@
 
     // Guardar Data Nuevo
     function Guardar() {
+        
         const data = {};
-        data["IdBook"] = document.querySelector("#IdBook").value;
-        data["UserID"] = document.querySelector("#UserID").value;
+        data["Name"] = document.querySelector("#Name").value;
+        data["ISBN"] = document.querySelector("#ISBN").value;
         
 
         fetch("https://localhost:44316/api/loan", {

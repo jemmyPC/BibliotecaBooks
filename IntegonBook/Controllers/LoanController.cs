@@ -21,11 +21,12 @@ namespace IntegonBook.Controllers
         private readonly AppDbContext _appDb;
         private readonly IRepository<Loan> _repos;
         private readonly IRepository<User> _reposU;
-
-        public LoanController(IRepository<Loan> repository, IRepository<User> reposU, AppDbContext appDb)
+        private readonly IRepository<Book> _reposB;
+        public LoanController(IRepository<Loan> repository, IRepository<User> reposU, IRepository<Book> reposB, AppDbContext appDb)
         {
             _repos = repository;
             _reposU = reposU;
+            _reposB = reposB;
             _appDb = appDb;
         }
 
@@ -53,8 +54,6 @@ namespace IntegonBook.Controllers
 
             try
             {
-
-
                 var user = _appDb.User.Where(u => u.ID == loan.UserID).First();
                 var book = _appDb.Book.Where(b => b.Id == loan.IdBook).First();
 
@@ -81,8 +80,8 @@ namespace IntegonBook.Controllers
 
                 Loan loans = new Loan
                 {
-                  //  Id = loan.Id,
-                    UserID = loan.UserID,
+                    //  Id = loan.Id,
+                     UserID = loan.UserID,
                     IdBook = loan.IdBook,
                     ISBN = loan.ISBN,
                 };
@@ -90,9 +89,11 @@ namespace IntegonBook.Controllers
                 loans.DateCreate = DateTime.Now;
                 loans.StatusId = 9;
                 _repos.Insert(loans);
-                user.Quantity = user.Quantity + loan.Quantity;
-                _reposU.Update(user, user.ID);
 
+                user.Quantity = user.Quantity + loan.Quantity;
+                book.Quantity = book.Quantity - loan.Quantity;
+                _reposU.Update(user, user.ID);
+                _reposB.Update(book, book.Id);
 
                 return Ok();
             }
