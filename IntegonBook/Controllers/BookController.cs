@@ -23,7 +23,7 @@ namespace IntegonBook.Controllers
         [HttpGet]
         public IEnumerable<Book> Index()
         {
-            var books = _repos.GetAll();
+            var books = _repos.GetAll().Where(u => u.IsActive == true && u.Quantity >= 2);
             return (books);
         }
 

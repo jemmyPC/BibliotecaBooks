@@ -16,6 +16,8 @@ namespace Models.Model
         public string Edition { get; set; }
         public string Description { get; set; }
         public int? Quantity { get; set; }
+
+        public bool? IsActive { get; set; }
         public virtual ICollection<Loan> Loans { get; set; }
     }
 }

@@ -18,26 +18,26 @@
 
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control" placeholder="Your Name"/>
             </div>
             <div id="errName"></div>
 
             <div class="form-group">
                 <label asp-for="LastName"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control"placeholder="Your Last Name" />
             </div>
             <div id="errLastName"></div>
 
             <div class="form-group">
                 <label asp-for="CURP"></label>
-                <input asp-for="CURP" class="form-control" placeholder="Needs to be an Email Format" />
+                <input asp-for="CURP" class="form-control" placeholder="18 Digits And Not Existing CURP" />
                 <span asp-validation-for="CURP" class="text-danger"></span>
             </div>
             <div id="errCURP"></div>
 
             <div class="form-group">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control" placeholder="Needs to be a Email " />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div id="errEmail"></div>
@@ -52,7 +52,7 @@
 
             <div class="form-group">
                 <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" placeholder="Not Repeat an Existing UserName" />
+                <input asp-for="Password" class="form-control" placeholder="Your Password" />
             </div>
             <div id="errPassword"></div>
 

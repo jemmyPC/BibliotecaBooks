@@ -15,6 +15,7 @@
                 <th>Password</th>
                 <th>Edit</th>
                 <th>Details</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -98,6 +99,8 @@
 
          // Abrir Modal Editar
         function MostrarEditar(id) {
+            var data = {};
+
             fetch("@Url.Action("Edith","User")/" + id, {
                 method: "GET"
             }).then(function (response) {
@@ -112,20 +115,48 @@
             });
         }
 
+                 // Delete
+        function Delete(id) {
+            var data = {};
+           
+            fetch("@Url.Action("Delete","User")/" + id, {
+                method: "DElETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function (response) {
+                if (response.ok) {
+                    table.ajax.reload();
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
+
         // Editar Data Guardar
         function Editar() {
-            const data = {};
-            data["ID"] = $("#ID").val();
-            data["Email"] = $("#Email").val();
-            data["Password"] = $("#Password").val();
-            console.log(data);
+            var data = {};
+
+            data["ID"] = document.querySelector("#ID").value;
+            data["Name"] = document.querySelector("#Name").value;
+            data["LastName"] = document.querySelector("#LastName").value;
+            data["CURP"] = document.querySelector("#CURP").value;
+            data["Email"] = document.querySelector("#Email").value;
+            data["UserName"] = document.querySelector("#UserName").value;
+            data["Password"] = document.querySelector("#Password").value;
+        
             fetch("https://localhost:44316/api/user", {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(function (response) {
                 if (response.ok) {
-                  table.ajax.reload(Callback);
                     $("#editarModal").modal("hide");
                 }
             });
@@ -166,18 +197,6 @@
             });
         }
 
-
-
-    function Callback() {
-        const buttons = document.querySelectorAll(".editar-modelo");
-        for (i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", function () {
-                MostrarEditar(this.dataset.id);
-            });
-        }
-    };
-
-
             $(document).ready(function ()
             {
                 var table = $('#tabla-contenido').DataTable(
@@ -205,6 +224,11 @@
                                 render: (data, type, row) => {
                                     return `<a class="btn btn-info" href="User/Details/${row.id}">Details</a>`
                                 },
+                            },
+                             {
+                                render: (data, type, row) => {
+                                    return `<a class="btn btn-info" onClick="Delete(${row.id})">Delete</a>`
+                                },
                             }
                                ],
             select: true,
@@ -216,37 +240,9 @@
                         ModalAbrir("show");
                         }
                     },
-                'copy', 'excel', 'pdf',
-                {
-                    text: 'Eliminar',
-                    action: function () {
-
-                        var rows = table.rows({ selected: true }).data();
-                        var ids = [];
-                        for (var x = 0; x < rows.length; x++) {
-                            ids.push(rows[x].id)
-                        }
-                        //
-                         bootbox.confirm("Deseas eliminar este elemento?", function (IsConfirmed) {
-                             if (IsConfirmed) {
-                                 // eliminar elemento
-                                  $.ajax({
-                                        contentType: 'application/json',
-                                        url: '/api/user/',
-
-                                        data: '[' + ids.toString() + ']',
-                                     type: 'DELETE',
-                                        success: () => {
-                                            table.ajax.reload();
-                                        }
-                                    });
-                            }
-                        });
-
-                        console.log(ids);
-                    }
-                }
-            ]
+                'copy', 'excel', 'pdf'
+                
+                    ]
         });
     } );
     </script>

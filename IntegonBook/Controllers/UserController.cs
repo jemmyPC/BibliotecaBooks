@@ -24,7 +24,8 @@ namespace IntegonBook.Controllers
         [HttpGet]
         public IEnumerable<User> Index()
         {
-            var user = _repos.GetAll();
+
+            var user = _repos.GetAll().Where(u=> u.IsActive== true);
             return (user);
         }
 
@@ -97,22 +98,46 @@ namespace IntegonBook.Controllers
             }
 
             User users = _repos.GetById(user.ID);
+                          
+            user.Name = users.Name;
+            user.LastName = users.LastName;
+            user.CURP = users.CURP;
+            user.UserName = user.UserName;
             users.Email = user.Email;
             users.Password = user.Password;
-           // _repos.Update(users);
+           _repos.Update(users, user.ID);
             return Ok();
         }
 
 
         //This Method Delete a User
-        [HttpDelete]
-        public ActionResult DeleteUser(User user)
+        [HttpDelete("{id}")]
+        public ActionResult DeleteUser([FromBody]  User user)
         {
             try
             {
-                _repos.Delete(user);
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
+                User users = _repos.GetById(user.ID);
+
+                user.Name = users.Name;
+                user.LastName = users.LastName;
+                user.CURP = users.CURP;
+                user.UserName = users.UserName;
+                user.Email = users.Email;
+                user.Password = users.Password;
+                user.IsActive = users.IsActive;
+
+                users.IsActive = false;
+
+                _repos.Update(users, user.ID);
+
                 return Ok();
             }
+
             catch (Exception err)
             {
                 return BadRequest(err.Message);

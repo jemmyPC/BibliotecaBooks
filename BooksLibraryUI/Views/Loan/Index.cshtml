@@ -49,21 +49,20 @@
 
         window.onload = function () {
             document.getElementById("btnGuardarModal").addEventListener("click", function () { Guardar(); })
-        
         }
 
         // Lipiar campos del modal
         function LimpiarModales() {
             const bodies = document.querySelectorAll("modal-body");
             for (i = 0; i < bodies.length; i++) { bodies[i].innerHTML = ""; }
-    }
+        }
 
    
 
 
 
 
-// Abrir Modal Crear
+// Abrir Modal
         function ModalAbrir(action) {
             fetch("@Url.Action("Agregar", "Loan")", {
                 method: "GET"
@@ -110,8 +109,7 @@
 
 
 
-// Abrir Modal Crear
-
+// Entregar Libro
     function deliver(row) {
         var data = {"Id":row};
 

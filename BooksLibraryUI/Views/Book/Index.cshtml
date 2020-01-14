@@ -16,6 +16,7 @@
                 <th>Quantity</th>
                 <th>Edit</th>
                 <th>Details</th>
+                <th>Delete</th>
 
             </tr>
         </thead>
@@ -76,10 +77,14 @@
             for (i = 0; i < bodies.length; i++) { bodies[i].innerHTML = ""; }
         }
 
+
+           // Limpiar Errores del modal
         function LimpiarErrors() {
             document.getElementById("errQuantity").innerText = "";
- 
         }
+
+
+
 // Abrir Modal Nuevo
         function ModalAbrir(action) {
             fetch("@Url.Action("Agregar", "Book")", {
@@ -94,7 +99,10 @@
                 }
             });
         }
-             // Abrir Modal Editar
+
+
+
+// Abrir Modal Editar
         function MostrarEditar(id) {
             fetch("@Url.Action("Edith","Book")/" + id, {
                 method: "GET"
@@ -110,7 +118,29 @@
             });
         }
 
-        // Editar Data Guardar
+
+        
+                 // Delete
+        function Delete(id) {
+            var data = {};
+           
+            fetch("@Url.Action("Delete","Book")/" + id, {
+                method: "DElETE",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function (response) {
+                if (response.ok) {
+                    table.ajax.reload();
+                }
+            });
+        }
+
+
+
+
+
+
+// Editar Data Guardar
         function Editar() {
             const data = {};
             data["Id"] = $("#Id").val();
@@ -122,7 +152,6 @@
                 body: JSON.stringify(data)
             }).then(function (response) {
                 if (response.ok) {
-                    table.ajax.reload(Callback);
                     $("#editarModal").modal("hide");
                 }
             });
@@ -159,17 +188,8 @@
                     }
                 });
             });
-            
         }
 
-        function Callback() {
-            const buttons = document.querySelectorAll(".editar-modelo");
-            for (i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener("click", function () {
-                    MostrarEditar(this.dataset.id);
-                });
-            }
-        };
 
         $(document).ready(function () {
             var table = $('#tabla-contenido').DataTable({
@@ -197,6 +217,11 @@
                     {
                         render: (data, type, row) => {
                             return `<a class="btn btn-info" href="Book/Details/${row.id}">Details</a>`
+                        },
+                    },
+                    {
+                        render: (data, type, row) => {
+                            return `<a class="btn btn-info" onClick="Delete(${row.id})">Delete</a>`
                         },
                     }
 

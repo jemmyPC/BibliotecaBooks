@@ -124,5 +124,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FailsBooks\FailsBooks.csproj">
+      <Project>{7e738d95-fafc-459b-a6e0-9a362cab6e35}</Project>
+      <Name>FailsBooks</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

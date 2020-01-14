@@ -18,9 +18,12 @@ namespace BooksLibraryUI.Controllers
         {
             _repos = repository;
         }
+
+
         // GET: User
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -36,7 +39,11 @@ namespace BooksLibraryUI.Controllers
         public IActionResult Edith(int id)
         {
             ViewData["Accion"] = "Edith";
-            return PartialView("Edith", new User());
+
+            User user = _repos.GetById(id);
+            User model = new List<User>.Enumerator().Current;
+         
+            return PartialView("Edith", user);
 
         }
         public IActionResult Details(int id)
@@ -45,9 +52,47 @@ namespace BooksLibraryUI.Controllers
 
             User user = _repos.GetById(id);
             User model = new List<User>.Enumerator().Current;
-        
             return PartialView("Details", user);
 
         }
+
+
+        [HttpDelete]
+        public IActionResult Delete(int id, User user)
+        {
+            ViewData["Accion"] = "Delete";
+
+            try
+            {
+                if (user == null)
+                {
+                    return BadRequest();
+                }
+
+                User users = _repos.GetById(user.ID);
+
+                user.Name = users.Name;
+                user.LastName = users.LastName;
+                user.CURP = users.CURP;
+                user.UserName = users.UserName;
+                user.Email = users.Email;
+                user.Password = users.Password;
+                user.IsActive = users.IsActive;
+
+                users.IsActive = false;
+
+                _repos.Update(users, user.ID);
+
+                return Ok();
+            }
+
+            catch (Exception err)
+            {
+                return BadRequest(err.Message);
+            }
+        }
+
     }
+
+
 }

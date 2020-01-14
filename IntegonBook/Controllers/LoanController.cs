@@ -59,21 +59,21 @@ namespace IntegonBook.Controllers
 
                 if (user.Quantity > 2)
                 {
-                    return "{\"Loan\":\"Tiene 3 libros prestados\"}";
+                    return "{\"Loan\":\"You Have Theree Loans \"}";
                 }
                 if (book.Quantity - 1 < 1)
                 {
-                    return "{\"Loan\":\"No Disponible para prestamo\"}";
+                    return "{\"Loan\":\"There is only ONE Book on LIbrary\"}";
                 }
 
                 if (user.IdStatus == 4)
                 {
-                    return "{\"Loan\":\"DSGDFYH\"}";
+                    return "{\"Loan\":\"Need to deliver an pay your Debs\"}";
 
                 }
-                if (user.IdStatus == 2)
+                if (user.IdStatus == 5)
                 {
-                    return "{\"Loan\":\"Tiene deudas por Pagar\"}";
+                    return "{\"Loan\":\"Have loans for deb\"}";
 
                 }
 
