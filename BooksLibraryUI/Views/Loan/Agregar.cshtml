@@ -1,0 +1,65 @@
+﻿@model Models.Loan
+
+
+
+@{
+    ViewData["Title"] = @ViewData["Accion"] + " Loan";
+}
+
+<div class="card">
+    <div class="card-header">
+
+    </div>
+    @{
+
+        List<SelectListItem> Users = new List<SelectListItem>();
+        var users = Model.users;
+        if (users != null)
+        {
+            foreach (var usr in users)
+            {
+                Users.Add(new SelectListItem { Text = usr.Name, Value = usr.ID.ToString() });
+            }
+        }
+
+        List<SelectListItem> Books = new List<SelectListItem>();
+
+        var books = Model.books;
+        if (books != null)
+        {
+            foreach (var book in books)
+            {
+                Books.Add(new SelectListItem { Text = book.Title.ToString(), Value = book.Id.ToString() });
+            }
+        }
+    }
+
+    <div class="form-group">
+        <label asp-for="User"></label>
+        @Html.DropDownListFor(a => a.User, Users, "-- Select Your User--")
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Book"></label>
+        @Html.DropDownListFor(a => a.Book, Books, "-- Select Title --")
+    </div>
+    <div id="errLoan">
+    </div>
+
+</div>
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"
+            asp-fallback-src="~/lib/jquery-validation/dist/jquery.validate.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator"
+            crossorigin="anonymous"
+            integrity="sha256-F6h55Qw6sweK+t7SiOJX+2bpSAa3b/fnlrVCJvmEj1A=">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"
+            asp-fallback-src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.validator && window.jQuery.validator.unobtrusive"
+            crossorigin="anonymous"
+            integrity="sha256-9GycpJnliUjJDVDqP0UEu/bsm9U+3dnQUH8+3W10vkY=">
+    </script>
+}
