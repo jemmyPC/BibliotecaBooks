@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BibliotecaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BibliotecaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Book">
           <Key>
             <PropertyRef Name="Id" />
@@ -17,6 +17,7 @@
           <Property Name="Edition" Type="nvarchar" MaxLength="600" />
           <Property Name="Description" Type="nvarchar" MaxLength="600" />
           <Property Name="Quantity" Type="int" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="Loan">
           <Key>
@@ -30,7 +31,7 @@
           <Property Name="StatusId" Type="int" />
           <Property Name="Price" Type="int" />
           <Property Name="IdBook" Type="int" Nullable="false" />
-          <Property Name="ISBN" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -151,8 +152,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BibliotecaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -169,6 +169,7 @@
           <Property Name="Description" Type="String" MaxLength="600" FixedLength="false" Unicode="true" />
           <Property Name="Quantity" Type="Int32" />
           <NavigationProperty Name="Loan" Relationship="Self.FK_Loan_Book" FromRole="Book" ToRole="Loan" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="Loan">
           <Key>
@@ -182,11 +183,11 @@
           <Property Name="StatusId" Type="Int32" />
           <Property Name="Price" Type="Int32" />
           <Property Name="IdBook" Type="Int32" Nullable="false" />
-          <Property Name="ISBN" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Book" Relationship="Self.FK_Loan_Book" FromRole="Loan" ToRole="Book" />
           <NavigationProperty Name="Status" Relationship="Self.FK_Loan_Status" FromRole="Loan" ToRole="Status" />
           <NavigationProperty Name="User" Relationship="Self.FK_Loan_User" FromRole="Loan" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_Loan_User1" FromRole="Loan" ToRole="User" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -321,6 +322,7 @@
           <EntitySetMapping Name="Book">
             <EntityTypeMapping TypeName="BibliotecaModel.Book">
               <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ISBN" ColumnName="ISBN" />
                 <ScalarProperty Name="Autor" ColumnName="Autor" />
@@ -335,6 +337,7 @@
           <EntitySetMapping Name="Loan">
             <EntityTypeMapping TypeName="BibliotecaModel.Loan">
               <MappingFragment StoreEntitySet="Loan">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
@@ -343,7 +346,6 @@
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="IdBook" ColumnName="IdBook" />
-                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
