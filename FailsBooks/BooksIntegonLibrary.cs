@@ -16,27 +16,25 @@ namespace DebsExec
     {
         
         static BibliotecaEntities db = new BibliotecaEntities();
-
         public static void checkDate()
         {
             try
             {
-
-                var loans = db.Loan.Where(d => d.StatusId == 3).ToList().Where(l => l.DateCreate.Value.AddDays(5) >= DateTime.Now);
-
+                var loans = db.Loan.Where(d => d.DateCreate.Value.AddDays(5) >= DateTime.Now && d.DateFinish == null);
                 foreach (var loan in loans)
                 {
-
-                   db.Entry(loan).State = System.Data.Entity.EntityState.Modified;
+                    loan.StatusId = 4;
+                    loan.Price = 10 * ((int)(loan.DateCreate.Value.AddDays(5) - DateTime.Now).TotalDays);
+                    db.Loan.Add(loan);
+                    db.Entry(loan).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
+                
 
-                Console.WriteLine("se actualizaron Loans" + loans.Count());
+                Console.WriteLine("Loans updated" + loans.Count());
             }
-            catch (Exception ee) {
-                Console.WriteLine(ee); }
+            catch (Exception ee) { Console.WriteLine(ee); }
         }
     }
 
 }
-

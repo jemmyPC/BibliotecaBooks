@@ -189,8 +189,9 @@
                 response.json().then(function (msg) {
                     if (msg["OK"] == "OK") {
                         
-                        ModalAbrir("hide")
-                                          
+                        ModalAbrir("hide");
+                        bootbox.alert("Success User Save!");
+                        location.reload(true);
                     
                     } else {
                         LimpiarErrors();
@@ -198,9 +199,9 @@
                             document.getElementById("err"+k).innerText = msg[k];
                         }
                     }
-                    location.reload(true);
+                    
                 }); 
-                 bootbox.alert("Success User Save!");  
+                  
             });
         }
 

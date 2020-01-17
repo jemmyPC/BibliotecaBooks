@@ -16,7 +16,6 @@
             <div class="form-group" hidden="hidden">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" />
-                <div id="errQuantity"></div>
             </div>
 
             <div class="form-group">
@@ -28,12 +27,14 @@
             <div class="form-group">
                 <label asp-for="Autor" class="control-label"></label>
                 <input asp-for="Autor" class="form-control" placeholder="Autor" />
+                <div id="errAutor"></div>
             </div>
 
 
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" placeholder="Title Book" />
+                <div id="errTitle"></div>
             </div>
 
             <div class="form-group">
@@ -44,11 +45,13 @@
             <div class="form-group">
                 <label asp-for="Edition" class="control-label"></label>
                 <input asp-for="Edition" class="form-control" placeholder="Edition Book" />
+                <div id="errQuantity"></div>
             </div>
 
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" placeholder=" Your Description Book" />
+            
             </div>
 
             <div class="form-group">

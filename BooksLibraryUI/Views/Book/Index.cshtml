@@ -83,6 +83,9 @@
         function LimpiarErrors() {
             document.getElementById("errQuantity").innerText = "";
             document.getElementById("errISBN").innerText = "";
+            document.getElementById("errAutor").innerText = "";
+            document.getElementById("errTitle").innerText = "";
+          
         }
 
 
@@ -139,26 +142,61 @@
         }
 
 
+        // Editar Data Guardar
+        function AddBook(id) {
+            var data = {};
+            data["Id"] = id;
+            data["Description"] = null;
+            data["Quantity"] = 1;
+            data["Autor"] = "a";
+            data["Title"] = "a"; 
+            data["Edition"] = "a";
 
+
+            fetch("https://localhost:44316/api/book" , {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function (response) {
+
+
+                response.json().then(function (msg) {
+                    if (msg["OK"] == "OK") {
+
+                        location.reload(true);
+                        bootbox.alert("Success Book Add !");
+
+                    } else {
+                        bootbox.alert(msg["Quantity"]);
+                    }
+
+                });
+
+            });
+        }
 
 
 
 // Editar Data Guardar
         function Editar() {
-            const data = {};
+            var data = {};
             data["Id"] = $("#Id").val();
             data["Description"] = $("#Description").val();
-
-            fetch("https://localhost:44316/api/book", {
+            data["Quantity"] = 1;
+            data["Autor"] = "a";
+            data["Title"] = "a";
+            data["Edition"] = "a";
+            fetch("https://localhost:44316/api/book" ,{
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             }).then(function (response) {
                 if (response.ok) {
+                    bootbox.alert("Success Book Edith !");
                     $("#editarModal").modal("hide");
                     location.reload(true);
                 }
-                bootbox.alert("Success Book Edith !");
+                
             });
         }
 
@@ -183,16 +221,18 @@
 
                 response.json().then(function (msg) {
                     if (msg["OK"] == "OK") {
-                        ModalAbrir("hide");                         
+                        bootbox.alert("Success Book Save!");
+                        ModalAbrir("hide");  
+                        location.reload(true);
                     } else {
                         LimpiarErrors();
                         for (var k in msg) {
                             document.getElementById("err" + k).innerText = msg[k];
                         }
                     }
-                    location.reload(true);
+                    
                 });
-                bootbox.alert("Success Book Save!");
+                
             });
         }
 
