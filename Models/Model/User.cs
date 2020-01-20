@@ -43,11 +43,6 @@ namespace Models.Model
         public int? Quantity { get; set; }
 
         public bool? IsActive { get; set; }
-        public int? IdStatus { get; set; }
-
-        [ForeignKey("IdStatus")]
-        public virtual Status Status { get; set; }
-
 
     }
 }

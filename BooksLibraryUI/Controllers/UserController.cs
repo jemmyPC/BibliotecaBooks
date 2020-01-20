@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Model;
+using Models;
 using RepositoryPattern.Interfaces;
 
 
@@ -14,9 +15,12 @@ namespace BooksLibraryUI.Controllers
     {
 
         private readonly IRepository<User> _repos;
-        public UserController(IRepository<User> repository)
+        private readonly IRepository<Loan> _reposL;
+
+        public UserController(IRepository<User> repository, IRepository<Loan> reposL)
         {
             _repos = repository;
+            _reposL = reposL;
         }
 
 
@@ -69,19 +73,17 @@ namespace BooksLibraryUI.Controllers
                     return BadRequest();
                 }
 
+                var loans = _reposL.GetAll().Where(l => l.UserID == user.ID && l.StatusId != 10).Count();
+                if (loans > 0)
+                {
+                    return BadRequest("The user need to get back the book");
+                }
+
                 User users = _repos.GetById(user.ID);
-
-                user.Name = users.Name;
-                user.LastName = users.LastName;
-                user.CURP = users.CURP;
-                user.UserName = users.UserName;
-                user.Email = users.Email;
-                user.Password = users.Password;
-                user.IsActive = users.IsActive;
-
+        
                 users.IsActive = false;
 
-                _repos.Update(users, user.ID);
+                _repos.Update(users);
 
                 return Ok();
             }

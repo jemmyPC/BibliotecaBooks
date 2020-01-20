@@ -14,9 +14,8 @@ namespace Models
         public int UserID { get; set; }
         public DateTime? DateCreate { get; set; }
         public DateTime? DateFinish { get; set; }
-        public int? Quantity { get; set; }
         public int? StatusId { get; set; }
-        public int? Price { get; set; }
+        public int? Debt { get; set; }
         public int IdBook { get; set; }
         public bool IsActive { get; set; }
 

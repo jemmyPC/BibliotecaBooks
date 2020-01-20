@@ -10,7 +10,7 @@ namespace Models.Model
         [Key]
         public int Id { get; set; }
 
-    
+        [Required(ErrorMessage = "ISBN is requiered")]
         public int ISBN { get; set; }
 
         [Required(ErrorMessage = "Autor is requiered")]
@@ -19,7 +19,6 @@ namespace Models.Model
         [Required(ErrorMessage = "Title is requiered")]
         public string Title { get; set; }
 
-       
         public int? NumPages { get; set; }
         [Required(ErrorMessage = "Edition is requiered")]
         public string Edition { get; set; }

@@ -46,7 +46,7 @@ namespace IntegonBook.Controllers
                         join u in users on l.UserID equals u.ID
                         join s in status on l.StatusId equals s.Id
                         join b in books on l.IdBook equals b.Id
-                        select new { l.Id, u.Name, u.LastName, l.DateCreate, l.DateFinish, b.Title, s.status, l.StatusId, l.Price };
+                        select new { l.Id, u.Name, u.LastName, l.DateCreate, l.DateFinish, b.Title, s.status, l.StatusId, l.Debt};
 
 
             return (query);
@@ -67,8 +67,8 @@ namespace IntegonBook.Controllers
 
             try
             {
-                var user = _appDb.User.Where(u => u.ID == loan.UserID).First();
-                var book = _appDb.Book.Where(b => b.Id == loan.IdBook).First();
+                User user = _appDb.User.Where(u => u.ID == loan.UserID).First();
+                Book book = _appDb.Book.Where(b => b.Id == loan.IdBook).First();
 
                 if (user.Quantity > 2)
                 {
@@ -78,15 +78,15 @@ namespace IntegonBook.Controllers
                 {
                     return "{\"Loan\":\"There is only ONE Book on LIbrary\"}";
                 }
-
-                if (user.IdStatus == 4)
+                
+                if (_repos.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 4).Count() > 0)
                 {
-                    return "{\"Loan\":\"Need to deliver an pay your Debs\"}";
+                    return "{\"Loan\":\"Need to deliver an pay your Debts\"}";
 
                 }
-                if (user.IdStatus == 5)
+                if (_repos.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 5).Count() > 0)
                 {
-                    return "{\"Loan\":\"Have loans for deb\"}";
+                    return "{\"Loan\":\"Have loans for debt\"}";
 
                 }
 
@@ -95,11 +95,8 @@ namespace IntegonBook.Controllers
                       Id = loan.Id,
                      UserID = loan.UserID,
                     IdBook = loan.IdBook,
-                    Quantity = 1,
                     IsActive = true
-
-
-
+                    
 
     };
 
@@ -107,10 +104,10 @@ namespace IntegonBook.Controllers
                 loans.StatusId = 9;
                 _repos.Insert(loans);
 
-                user.Quantity = user.Quantity + loans.Quantity;
-                book.Quantity = book.Quantity - loans.Quantity;
-                _reposU.Update(user, user.ID);
-                _reposB.Update(book, book.Id);
+                user.Quantity = user.Quantity + 1;
+                book.Quantity = book.Quantity - 1;
+                _reposU.Update(user);
+                _reposB.Update(book);
 
                 return "{\"OK\":\"OK\"}";
             }
@@ -134,27 +131,18 @@ namespace IntegonBook.Controllers
             loans.DateFinish = DateTime.Now;
             loans.StatusId = 10;
 
-             _repos.Update(loans, loan.Id);
+             _repos.Update(loans);
 
             User user = _reposU.GetById(loans.UserID);
             Book book = _reposB.GetById(loans.IdBook);
             user.Quantity = user.Quantity - 1;
             book.Quantity = book.Quantity + 1;
-            _reposU.Update(user, user.ID);
-            _reposB.Update(book, book.Id);
+            _reposU.Update(user);
+            _reposB.Update(book);
             return Ok();
 
         }
 
-
-        //This Method Delete a User
-        [HttpDelete]
-        public ActionResult DeleteLoan(Loan loan)
-        {
-
-            _repos.Delete(loan);
-            return Ok();
-        }
 
     }
 }

@@ -9,7 +9,6 @@ namespace RepositoryPattern.Interfaces
         IEnumerable<T> GetAll();
         T GetById(int id);
         void Insert(T obj);
-        void Update(T obj, int id);
-        void Delete(T obj);
+        void Update(T obj);
     }
 }

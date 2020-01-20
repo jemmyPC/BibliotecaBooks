@@ -21,13 +21,6 @@ namespace RepositoryPattern.Services
 
         }
 
-        public void Delete(T obj)
-        {
-            table.Remove(obj);
-            db.SaveChanges();
-
-        }
-
         public IEnumerable<T> GetAll()
         {
             return table.ToList();
@@ -44,10 +37,9 @@ namespace RepositoryPattern.Services
             db.SaveChanges();
         }
 
-        public void Update(T obj, int id)
-        {
-            var record = table.Find(id);
-            record = obj;
+        public void Update(T obj)
+        {        
+            db.Update(obj);
             db.SaveChanges();
         }
     }
