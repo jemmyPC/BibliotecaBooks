@@ -18,29 +18,28 @@ namespace IntegonBook.Controllers
     [ApiController]
     public class LoanController : ControllerBase
     {
-        private readonly AppDbContext _appDb;
-        private readonly IRepository<Loan> _repos;
-        private readonly IRepository<User> _reposU;
-        private readonly IRepository<Book> _reposB;
-        private readonly IRepository<Status> _reposS;
-        public LoanController(IRepository<Loan> repository, IRepository<User> reposU, IRepository<Book> reposB, IRepository<Status> reposS, AppDbContext appDb)
+     
+        private readonly IRepository<Loan> _reposLoan;
+        private readonly IRepository<User> _reposUser;
+        private readonly IRepository<Book> _reposBook;
+        private readonly IRepository<Status> _reposStatus;
+        public LoanController(IRepository<Loan> reposLoan, IRepository<User> reposUser, IRepository<Book> reposBook, IRepository<Status> reposStatus)
         {
-            _repos = repository;
-            _reposU = reposU;
-            _reposB = reposB;
-            _appDb = appDb;
-            _reposS = reposS;
+            _reposLoan = reposLoan;
+            _reposUser = reposUser;
+            _reposBook = reposBook;
+            _reposStatus = reposStatus;
         }
 
         //   GET: Users this Method Get all Loans 
         [HttpGet]
-        public IEnumerable<Object> Index()
+        public IEnumerable<Object> GetAll()
         {
 
-            var loans = _repos.GetAll();
-            var users = _reposU.GetAll();
-            var status = _reposS.GetAll();
-            var books = _reposB.GetAll();
+            var loans = _reposLoan.GetAll();
+            var users = _reposUser.GetAll();
+            var status = _reposStatus.GetAll();
+            var books = _reposBook.GetAll();
 
             var query = from l in loans
                         join u in users on l.UserID equals u.ID
@@ -54,7 +53,7 @@ namespace IntegonBook.Controllers
         [HttpGet("{id}")]
         public Loan GetById(int id)
         {
-            Loan loan = _repos.GetById(id);
+            Loan loan = _reposLoan.GetById(id);
             return loan;
         }
 
@@ -62,60 +61,42 @@ namespace IntegonBook.Controllers
         //This Method Create a new Loan
         [HttpPost]
 
-        public String PostLoan([FromBody] Loan loan)
+        public ActionResult Post([FromBody] Loan loan)
         {
+            User user = _reposUser.GetById(loan.UserID);
+            Book book = _reposBook.GetById(loan.IdBook);
 
-            try
+            if (user.Quantity > 2)
             {
-                User user = _appDb.User.Where(u => u.ID == loan.UserID).First();
-                Book book = _appDb.Book.Where(b => b.Id == loan.IdBook).First();
-
-                if (user.Quantity > 2)
-                {
-                    return "{\"Loan\":\"You Have Theree Loans \"}";
-                }
-                if (book.Quantity - 1 < 1)
-                {
-                    return "{\"Loan\":\"There is only ONE Book on LIbrary\"}";
-                }
+                return BadRequest("{\"Loan\":\"You Have Theree Loans \"}");
+            }
+            if (book.Quantity - 1 < 1)
+            {
+                return BadRequest("{\"Loan\":\"There is only ONE Book on LIbrary\"}");
+            }
                 
-                if (_repos.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 4).Count() > 0)
-                {
-                    return "{\"Loan\":\"Need to deliver an pay your Debts\"}";
-
-                }
-                if (_repos.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 5).Count() > 0)
-                {
-                    return "{\"Loan\":\"Have loans for debt\"}";
-
-                }
-
-                Loan loans = new Loan
-                {
-                      Id = loan.Id,
-                     UserID = loan.UserID,
-                    IdBook = loan.IdBook,
-                    IsActive = true
-                    
-
-    };
-
-                loans.DateCreate = DateTime.Now;
-                loans.StatusId = 9;
-                _repos.Insert(loans);
-
-                user.Quantity = user.Quantity + 1;
-                book.Quantity = book.Quantity - 1;
-                _reposU.Update(user);
-                _reposB.Update(book);
-
-                return "{\"OK\":\"OK\"}";
-            }
-
-            catch (Exception err)
+            if (_reposLoan.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 4).Count() > 0)
             {
-                return "{\"OK\":\"" + err.Message + "\"}";
+                return BadRequest("{\"Loan\":\"Need to deliver and pay your Debts\"}");
+
             }
+            if (_reposLoan.GetAll().Where(l => l.UserID == user.ID && l.StatusId == 5).Count() > 0)
+            {
+                return BadRequest("{\"Loan\":\"Have loans for debt\"}");
+
+            }
+
+            loan.DateCreate = DateTime.Now;
+            loan.StatusId = 9;
+            loan.IsActive = true;
+            _reposLoan.Insert(loan);
+
+            user.Quantity = user.Quantity + 1;
+            book.Quantity = book.Quantity - 1;
+            _reposUser.Update(user);
+            _reposBook.Update(book);
+
+            return Ok();
         }
 
 
@@ -123,27 +104,23 @@ namespace IntegonBook.Controllers
         [HttpPut]
         public ActionResult BackBook(Loan loan)
         {
-            Loan loans = _repos.GetById(loan.Id);
-            if(loans.DateFinish != null)
+            if(loan.DateFinish != null)
             {
                 return BadRequest("This loan have been finished");
             }
-            loans.DateFinish = DateTime.Now;
-            loans.StatusId = 10;
+            loan.DateFinish = DateTime.Now;
+            loan.StatusId = 10;
 
-             _repos.Update(loans);
+             _reposLoan.Update(loan);
 
-            User user = _reposU.GetById(loans.UserID);
-            Book book = _reposB.GetById(loans.IdBook);
+            User user = _reposUser.GetById(loan.UserID);
+            Book book = _reposBook.GetById(loan.IdBook);
             user.Quantity = user.Quantity - 1;
             book.Quantity = book.Quantity + 1;
-            _reposU.Update(user);
-            _reposB.Update(book);
+            _reposUser.Update(user);
+            _reposBook.Update(book);
             return Ok();
-
         }
-
-
     }
 }
 

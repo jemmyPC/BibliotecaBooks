@@ -10,8 +10,8 @@ namespace Models.Model
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "ISBN is requiered")]
-        public int ISBN { get; set; }
+        [RegularExpression("([0-9]{13})", ErrorMessage = "ISBN should have 13 digits")]
+        public long ISBN { get; set; }
 
         [Required(ErrorMessage = "Autor is requiered")]
         public string Autor { get; set; }
