@@ -80,8 +80,9 @@
 
     // Guardar Data Nuevo
     function Guardar() {
-   
+     
         var data = {};
+
         data["UserID"] = document.getElementById("User").value;
         data["IdBook"] = document.getElementById("Book").value;
 
@@ -110,20 +111,29 @@
 
 
 // Entregar Libro
-    function deliver(row) {
-        var data = {"Id":row};
-
-           fetch("https://localhost:44316/api/loan" , {
+    function deliver(id) {
+      
+        fetch("https://localhost:44316/api/loan/" + id, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+        }).then(loan => loan.json()).then(loan => {
+            fetch("https://localhost:44316/api/loan", {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(function (response) {
+                body: JSON.stringify(loan)
+            }).then(response => {
                 if (response.ok) {
-                    bootbox.alert("Deliver")
-                    table.ajax.reload();
+                    location.reload(true);
+                    bootbox.alert("Success loan Deliver!");
+                } else {
+                    return response.json();
                 }
+            }).then(error => {
+                bootbox.alert(error["Loan"]);
             });
-        }
+        });
+    }
+     
 
 
         $(document).ready(function () {
@@ -140,15 +150,8 @@
                     { data: 'title' },
                     { data: 'dateCreate' },
                     { data: 'dateFinish' },
-                    { data: 'status' },
-         
-
-                      {
-                                render: (data, type, row) => {
-                                    return `<a class="btn btn-info" href="Loan/Details/${row.id}">Details</a>`
-                                },
-                    },
-                      
+                    { data: 'status' },        
+                   
                       {
                         render: (data, type, row) => {
                             return `<a class="btn btn-info"  onClick="deliver(${row.id})" >Deliver</a>`

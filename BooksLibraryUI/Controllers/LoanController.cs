@@ -40,18 +40,5 @@ namespace BooksLibraryUI.Controllers
             new_loan.books = _reposB.GetAll();
             return PartialView("Agregar", new_loan);
         }
-
-
-
-        public IActionResult Details(int id)
-        {
-            ViewData["Accion"] = "Details";
-
-            Loan loan = _reposL.GetById(id);
-            Loan model = new List<Loan>.Enumerator().Current;
-
-            return PartialView("Details", loan);
-
-        }
     }
 }

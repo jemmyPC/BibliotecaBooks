@@ -22,12 +22,9 @@ namespace BooksLibraryUI.Controllers
             _repos = repository;
             _reposL = reposL;
         }
-
-
         // GET: User
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -43,58 +40,17 @@ namespace BooksLibraryUI.Controllers
         public IActionResult Edith(int id)
         {
             ViewData["Accion"] = "Edith";
-
             User user = _repos.GetById(id);
             User model = new List<User>.Enumerator().Current;
-         
             return PartialView("Edith", user);
 
         }
         public IActionResult Details(int id)
         {
             ViewData["Accion"] = "Details";
-
             User user = _repos.GetById(id);
             User model = new List<User>.Enumerator().Current;
             return PartialView("Details", user);
-
         }
-
-
-        [HttpDelete]
-        public IActionResult Delete(int id, User user)
-        {
-            ViewData["Accion"] = "Delete";
-
-            try
-            {
-                if (user == null)
-                {
-                    return BadRequest();
-                }
-
-                var loans = _reposL.GetAll().Where(l => l.UserID == user.ID && l.StatusId != 10).Count();
-                if (loans > 0)
-                {
-                    return BadRequest("The user need to get back the book");
-                }
-
-                User users = _repos.GetById(user.ID);
-        
-                users.IsActive = false;
-
-                _repos.Update(users);
-
-                return Ok();
-            }
-
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
-
     }
-
-
 }

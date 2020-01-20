@@ -12,7 +12,7 @@ namespace BooksLibraryUI.Controllers
     public class BookController : Controller
     {
         private readonly IRepository<Book> _repos;
-        
+
         public BookController(IRepository<Book> repository)
         {
             _repos = repository;
@@ -34,8 +34,15 @@ namespace BooksLibraryUI.Controllers
         {
 
             ViewData["Accion"] = "Edith";
-            return PartialView("Edith", new Book());
+
+            Book book = _repos.GetById(id);
+            Book model = new List<Book>.Enumerator().Current;
+
+            return PartialView("Edith", book);
         }
+
+
+
         public IActionResult Details(int id)
         {
             ViewData["Accion"] = "Details";
@@ -46,44 +53,6 @@ namespace BooksLibraryUI.Controllers
             return PartialView("Details", book);
 
         }
-
-
-        [HttpDelete]
-        public IActionResult Delete(int id, Book book)
-        {
-            ViewData["Accion"] = "Delete";
-
-            try
-            {
-                if (book == null)
-                {
-                    return BadRequest();
-                }
-
-                Book books = _repos.GetById(book.Id);
-
-                book.Title = books.Title;
-                book.ISBN = books.ISBN;
-                book.Autor = books.Autor;
-                book.NumPages = books.NumPages;
-                book.Description = books.Description;
-                book.Quantity = books.Quantity;
-                book.IsActive = books.IsActive;
-
-                books.IsActive = false;
-
-                _repos.Update(books, book.Id);
-
-                return View("Index", "Book");
-            }
-
-            catch (Exception err)
-            {
-                return BadRequest(err.Message);
-            }
-        }
-
-
 
 
     }

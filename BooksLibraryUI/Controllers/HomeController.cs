@@ -14,21 +14,5 @@ namespace BooksLibraryUI.Controllers
         {
             return View();
         }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "This is a New Aplication for Integon Library";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-       
     }
 }

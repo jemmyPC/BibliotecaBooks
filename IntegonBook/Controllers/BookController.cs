@@ -66,14 +66,14 @@ namespace IntegonBook.Controllers
         public ActionResult PutBook([FromBody]  Book book)
         {
 
-
-            if (book.Description.EndsWith("+1"))
+            int quantity = book.Description.EndsWith("+1") ? 1 : book.Description.EndsWith("-1") ? -1 : 0;
+            if (quantity != 0)
             {
 
                 var loan = _reposLoan.GetAll().Where(u => u.IdBook == book.Id && u.DateFinish == null).Count();
 
 
-                if (loan + (int)book.Quantity + 1 > 10)
+                if (loan + (int)book.Quantity + quantity > 10)
                 {
                     if (loan == 0)
                     {
@@ -89,7 +89,7 @@ namespace IntegonBook.Controllers
                     
                 }
                 book.Description = book.Description.Remove(book.Description.Length-2);
-                book.Quantity = book.Quantity + 1;
+                book.Quantity = book.Quantity + quantity;
             }
 
             _reposBook.Update(book);

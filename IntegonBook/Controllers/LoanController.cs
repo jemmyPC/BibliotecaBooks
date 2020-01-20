@@ -106,7 +106,7 @@ namespace IntegonBook.Controllers
         {
             if(loan.DateFinish != null)
             {
-                return BadRequest("This loan have been finished");
+                return BadRequest("{\"Loan\":\"This loan have been finished\"}");
             }
             loan.DateFinish = DateTime.Now;
             loan.StatusId = 10;

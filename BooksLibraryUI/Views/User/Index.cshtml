@@ -116,28 +116,34 @@
 
                  // Delete
         function Delete(id) {
-            var data = {};
-           
-            fetch("@Url.Action("Delete","User")/" + id, {
-                method: "DElETE",
+
+            fetch("https://localhost:44316/api/user/" + id, {
+                method: "GET",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(function (response) {
-                if (response.ok) {
-
-                    location.reload(true);                                
-                }
-                bootbox.alert("Success User Delete!");
+            }).then(user => user.json()).then(user => {
+                user.IsActive = false;
+                fetch("https://localhost:44316/api/user", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload(true);
+                        bootbox.alert("Success User Delete!");
+                    } else {
+                        return response.json();
+                    }
+                }).then(error => {
+                    bootbox.alert(error["Debt"]);
+                });
             });
+            /*
+
+
+                
+        /**/
+
         }
-
-
-
-
-
-
-
-
 
 
         // Editar Data Guardar
@@ -151,7 +157,9 @@
             data["Email"] = document.querySelector("#Email").value;
             data["UserName"] = document.querySelector("#UserName").value;
             data["Password"] = document.querySelector("#Password").value;
-        
+            data["Quantity"] = document.querySelector("#Quantity").value;
+            data["IsActive"] = true;
+            console.log(data);
             fetch("https://localhost:44316/api/user", {
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },
@@ -183,26 +191,20 @@
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
-            }).then(function (response) {
-                
+            }).then(response => {
+                if (response.ok) {
+                    ModalAbrir("hide");
+                    bootbox.alert("Success User Save!");
+                    location.reload(true);
+                } else { return response.json(); }
+            }).then(errors => {
+                LimpiarErrors();
+                for (var k in errors) {
+                    console.log(errors[k]);
+                    document.getElementById("err" + k).innerText = errors[k];
+                }
+                }).catch(error => console.dir(error));
 
-                response.json().then(function (msg) {
-                    if (msg["OK"] == "OK") {
-                        
-                        ModalAbrir("hide");
-                        bootbox.alert("Success User Save!");
-                        location.reload(true);
-                    
-                    } else {
-                        LimpiarErrors();
-                        for (var k in msg) {
-                            document.getElementById("err"+k).innerText = msg[k];
-                        }
-                    }
-                    
-                }); 
-                  
-            });
         }
 
             $(document).ready(function ()

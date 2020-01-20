@@ -23,7 +23,7 @@ namespace Models.Model
         [Required(ErrorMessage = "Edition is requiered")]
         public string Edition { get; set; }
 
-   
+        [Required(ErrorMessage = "Description is requiered")]
         public string Description { get; set; }
 
         [Range(1, 10,

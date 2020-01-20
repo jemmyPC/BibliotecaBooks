@@ -85,7 +85,7 @@
             document.getElementById("errISBN").innerText = "";
             document.getElementById("errAutor").innerText = "";
             document.getElementById("errTitle").innerText = "";
-          
+            document.getElementById("errDescription").innerText = "";
         }
 
 
@@ -122,57 +122,40 @@
             });
         }
 
-
+        function PutBook(id, pre) {
+            
+            fetch("https://localhost:44316/api/book/" + id, {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json' },
+            }).then(book => book.json()).then(book => {
+                
+                book.description = book.description + pre;
+                
+                fetch("https://localhost:44316/api/book", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(book)
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload(true);
+                        bootbox.alert("Success Book Delete!");
+                    } else {                        
+                        return response.json();
+                    }
+                }).then(error => {
+                    bootbox.alert(error["Quantity"]);
+                });
+            });
+        }
         
                  // Delete
         function Delete(id) {
-            var data = {};
-           
-            fetch("@Url.Action("Delete","Book")/" + id, {
-                method: "DElETE",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(function (response) {
-                if (response.ok) {
-                 
-                    location.reload(true);
-                }
-                bootbox.alert("Success Book Delete!");
-            });
+            PutBook(id, "-1");
         }
-
 
         // Editar Data Guardar
         function AddBook(id) {
-            var data = {};
-            data["Id"] = id;
-            data["Description"] = null;
-            data["Quantity"] = 1;
-            data["Autor"] = "a";
-            data["Title"] = "a"; 
-            data["Edition"] = "a";
-
-
-            fetch("https://localhost:44316/api/book" , {
-                method: "PUT",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(function (response) {
-
-
-                response.json().then(function (msg) {
-                    if (msg["OK"] == "OK") {
-
-                        location.reload(true);
-                        bootbox.alert("Success Book Add !");
-
-                    } else {
-                        bootbox.alert(msg["Quantity"]);
-                    }
-
-                });
-
-            });
+            PutBook(id, "+1");
         }
 
 
@@ -180,12 +163,15 @@
 // Editar Data Guardar
         function Editar() {
             var data = {};
-            data["Id"] = $("#Id").val();
+             data["Id"] = $("#Id").val();
+            data["ISBN"] = $("#ISBN").val();
+            data["Autor"] = $("#Autor").val();
+            data["Title"] = $("#Title").val();
+            data["NumPages"] = $("#NumPages").val();
+            data["Edition"] = $("#Edition").val();
+            data["Quantity"] = $("#Quantity").val();
             data["Description"] = $("#Description").val();
-            data["Quantity"] = 1;
-            data["Autor"] = "a";
-            data["Title"] = "a";
-            data["Edition"] = "a";
+            data["IsActive"] = true;
             fetch("https://localhost:44316/api/book" ,{
                 method: "PUT",
                 headers: { 'Content-Type': 'application/json' },

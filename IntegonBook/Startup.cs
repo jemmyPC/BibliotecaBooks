@@ -41,11 +41,11 @@ namespace IntegonBook
 
             services.AddCors(options =>
             {
-                options.AddPolicy("http://localhost:4200",
+                options.AddPolicy("https://localhost:44337",
                 builder =>
                 {
 
-                    builder.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                    builder.WithOrigins("https://localhost:44337").AllowAnyMethod().AllowAnyHeader();
                 });
             });
 
@@ -73,7 +73,7 @@ namespace IntegonBook
                 app.UseHsts();
             }
 
-            app.UseCors(c => c.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(c => c.WithOrigins("https://localhost:44337").AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
