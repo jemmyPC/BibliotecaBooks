@@ -202,24 +202,19 @@
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
-            }).then(function (response) {
-
-
-                response.json().then(function (msg) {
-                    if (msg["OK"] == "OK") {
-                        bootbox.alert("Success Book Save!");
-                        ModalAbrir("hide");  
-                        location.reload(true);
-                    } else {
-                        LimpiarErrors();
-                        for (var k in msg) {
-                            document.getElementById("err" + k).innerText = msg[k];
-                        }
-                    }
-                    
-                });
-                
-            });
+            }).then(response => {
+                if (response.ok) {
+                    ModalAbrir("hide");
+                    bootbox.alert("Success Book Save!");
+                    location.reload(true);
+                } else { return response.json(); }
+            }).then(errors => {
+                LimpiarErrors();
+                for (var k in errors) {
+                    console.log(errors[k]);
+                    document.getElementById("err" + k).innerText = errors[k];
+                }
+            }).catch(error => console.dir(error));
         }
 
 

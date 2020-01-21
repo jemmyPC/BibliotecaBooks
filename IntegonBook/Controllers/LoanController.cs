@@ -46,13 +46,13 @@ namespace IntegonBook.Controllers
                         join s in status on l.StatusId equals s.Id
                         join b in books on l.IdBook equals b.Id
                         select new { l.Id, u.Name, u.LastName, l.DateCreate, l.DateFinish, b.Title, s.status, l.StatusId, l.Debt};
-
-
             return (query);
         }
+
+
         [HttpGet("{id}")]
         public Loan GetById(int id)
-        {
+        {            
             Loan loan = _reposLoan.GetById(id);
             return loan;
         }
@@ -88,6 +88,7 @@ namespace IntegonBook.Controllers
 
             loan.DateCreate = DateTime.Now;
             loan.StatusId = 9;
+            loan.Debt = 0;
             loan.IsActive = true;
             _reposLoan.Insert(loan);
 
@@ -106,19 +107,41 @@ namespace IntegonBook.Controllers
         {
             if(loan.DateFinish != null)
             {
-                return BadRequest("{\"Loan\":\"This loan have been finished\"}");
+                if (loan.StatusId == 10)
+                {
+                    return BadRequest("{\"Loan\":\"This loan have been finished\"}");
+                }
+                else {
+                    loan.StatusId = 8;
+                    loan.Debt = 0;
+                    _reposLoan.Update(loan);
+                }
+                
             }
-            loan.DateFinish = DateTime.Now;
-            loan.StatusId = 10;
+            else
+            {
+                loan.DateFinish = DateTime.Now;
+                int diff = (loan.DateFinish - loan.DateCreate).Value.Days;
+                if (diff > 5)
+                {
+                    loan.StatusId = 5;
+                    loan.Debt = 10 * diff;
+                }
+                else
+                {
+                    loan.StatusId = 10;
+                }
+                
+                _reposLoan.Update(loan);
 
-             _reposLoan.Update(loan);
+                User user = _reposUser.GetById(loan.UserID);
+                Book book = _reposBook.GetById(loan.IdBook);
+                user.Quantity = user.Quantity - 1;
+                book.Quantity = book.Quantity + 1;
+                _reposUser.Update(user);
+                _reposBook.Update(book);
+            }
 
-            User user = _reposUser.GetById(loan.UserID);
-            Book book = _reposBook.GetById(loan.IdBook);
-            user.Quantity = user.Quantity - 1;
-            book.Quantity = book.Quantity + 1;
-            _reposUser.Update(user);
-            _reposBook.Update(book);
             return Ok();
         }
     }

@@ -36,6 +36,7 @@ namespace IntegonBook.Controllers
             return _reposUser.GetById(id);
         }
 
+        
         //This Method Create a new User
         [HttpPost]
         public ActionResult Post([FromBody] User user)
@@ -81,6 +82,10 @@ namespace IntegonBook.Controllers
             _reposUser.Update(user);
             return Ok();
         }
+
+
+
+        
 
     }
 }

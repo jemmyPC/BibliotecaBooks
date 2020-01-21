@@ -137,11 +137,6 @@
                     bootbox.alert(error["Debt"]);
                 });
             });
-            /*
-
-
-                
-        /**/
 
         }
 
@@ -175,7 +170,32 @@
         }
 
 
+        function Details(id) {
 
+            fetch("https://localhost:44316/api/user/" + id, {
+                method: "GET",
+                headers: { 'Content-Type': 'application/json' },
+            }).then(user => user.json()).then(user => {
+                console.log(user);
+                /*
+                user.IsActive = false;
+                fetch("https://localhost:44316/api/user", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(user)
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload(true);
+                        bootbox.alert("Success User Delete!");
+                    } else {
+                        return response.json();
+                    }
+                }).then(error => {
+                    bootbox.alert(error["Debt"]);
+                });/**/
+            });
+
+        }
 
    // Guardar Crear
         function Guardar() {
@@ -232,6 +252,7 @@
                             {
                                 render: (data, type, row) => {
                                     return `<a class="btn btn-info" href="User/Details/${row.id}">Details</a>`
+                                    //return `<a class="btn btn-info" onClick="Details(${row.id})">Details</a>`
                                 },
                             },
                              {

@@ -1,0 +1,84 @@
+﻿
+<title> Debts </title>
+
+<h1> Debts</h1>
+
+<div class="table-responsive">
+    <table class="table" id="tabla-contenido">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Title</th>
+                <th>DateCreate</th>
+                <th>DateFinish</th>
+                <th>STATUS</th>
+                <th>DEBT</th>
+                <th>Pay</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+// Entregar Libro
+    function deliver(id) {
+
+        fetch("https://localhost:44316/api/loan/" + id, {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json' },
+        }).then(loan => loan.json()).then(loan => {
+            fetch("https://localhost:44316/api/loan", {
+                method: "PUT",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(loan)
+            }).then(response => {
+                if (response.ok) {
+                    location.reload(true);
+                    bootbox.alert("Success loan Deliver!");
+                } else {
+                    return response.json();
+                }
+            }).then(error => {
+                bootbox.alert(error["Loan"]);
+            });
+        });
+    }
+
+
+
+        $(document).ready(function () {
+            var token = window.location.href.split("/");
+            var idL = token[token.length - 1]
+            var table = $('#tabla-contenido').DataTable({
+                ajax: {
+                    url: 'https://localhost:44316/api/validator/' + idL,
+                    type: 'GET',
+                    datatype: 'JSON',
+                    dataSrc: ''
+                },
+                columns: [
+                    { data: 'name' },
+                    { data: 'lastName' },
+                    { data: 'title' },
+                    { data: 'dateCreate' },
+                    { data: 'dateFinish' },
+                    { data: 'status' },
+                    { data: 'debt' },
+
+                      {
+                        render: (data, type, row) => {
+                              return `<a class="btn btn-info"  onClick="Pay(${row.id})" >Pay</a>`
+                        },
+                    }
+
+                ]
+            });
+        });
+    </script>
+}

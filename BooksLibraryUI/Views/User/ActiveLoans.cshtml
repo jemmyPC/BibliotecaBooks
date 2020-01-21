@@ -1,0 +1,49 @@
+﻿<title> Loans History </title>
+
+<h1> Loans History </h1>
+
+<div class="table-responsive">
+    <table class="table" id="tabla-contenido">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Title</th>
+                <th>DateCreate</th>
+                <th>DateFinish</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var token = window.location.href.split("/");
+            var idL = token[token.length - 1]
+            var table = $('#tabla-contenido').DataTable({
+                ajax: {
+                    url: 'https://localhost:44316/api/validator/' + idL,
+                    type: 'POST',
+                    datatype: 'JSON',
+                    dataSrc: '',
+
+                },
+                columns: [
+                    { data: 'name' },
+                    { data: 'lastName' },
+                    { data: 'title' },
+                    { data: 'dateCreate' },
+                    { data: 'dateFinish' },
+                    { data: 'status' },
+                      
+
+                ]
+            });
+        });
+    </script>
+}

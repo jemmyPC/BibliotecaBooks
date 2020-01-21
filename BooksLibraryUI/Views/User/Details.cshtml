@@ -7,35 +7,34 @@
 <title> Detail Page </title>
 
 <header>
-    <h1>   Detail Page for @Model.Name </h1>
+    <h1> Detail Page for @Model.Name </h1>
 </header>
+
+
 <body>
     <div class="jumbotron">
         <div class="jumbotron jumbotron-fluid" style="width:700px" margin="45">
             <div class="card">
-                <img class="card-img-center" src="https://img.ecartelera.com/noticias/42300/42348-c.jpg" alt="Card image">
+                <img class="card-img-center" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSsCtHo-_nthx4D3Lf_gR5p1jzw3Lum0dl1E3wIT5F5rkx7gr5T">
                 <div class="card-img-top">
-                    <h4 class="card-title">Name : @Model.Name </h4>
-                    <h4 class="card-text">Last Name: @Model.LastName</h4>
-                    <h4 class="card-text">User Name: @Model.UserName</h4>
-                    <h4 class="card-text">CURP: @Model.CURP</h4>
-                    <h4 class="card-text">EMAIL: @Model.Email</h4>
-
-
-                    <button type="button" class="btn btn-secondary" onClick="ModalAbrir('show')"> Active Loans </button>
-                    <button type="submit" class="btn btn-primary "onClick="ModalAbrir('show')"> Loan Debs </button>
+                    <h4 class="card-title"> Name : @Model.Name</h4>
+                    <h4 class="card-text"> LastName: @Model.LastName</h4>
+                    <h4 class="card-text"> CURP: @Model.CURP</h4>
+                    <h4 class="card-text"> UserName: @Model.UserName</h4>
+                    <h4 class="card-text"> Email: @Model.Email</h4>
+                    <h4 class="card-text"> Books in Loans: @Model.Quantity</h4>
 
                 </div>
             </div>
+            <a class="btn btn-primary" href="../Debts/@Model.ID" role="button">Debts</a>
         </div>
+        <a class="btn btn-primary" href="../ActiveLoans/@Model.ID" role="button">Active Loans</a>
     </div>
 </body>
+
 
 
 
 <footer>
     <a asp-action="Index" class="jumbotron jumbotron-fluid" style="color:lightpink">Back to List</a>
 </footer>
-
-
-

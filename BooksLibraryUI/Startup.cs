@@ -40,6 +40,7 @@ namespace BooksLibraryUI
             services.AddScoped<IRepository<User>, Repository<User>>();
             services.AddScoped<IRepository<Loan>, Repository<Loan>>();
             services.AddScoped<IRepository<Book>, Repository<Book>>();
+            services.AddScoped<IRepository<Status>, Repository<Status>>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
