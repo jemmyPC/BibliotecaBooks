@@ -36,8 +36,8 @@ namespace BooksLibraryUI.Controllers
         {
             ViewData["Accion"] = "Agregar";
             Loan new_loan = new Loan();
-            new_loan.users = _reposU.GetAll();
-            new_loan.books = _reposB.GetAll();
+            new_loan.users = _reposU.GetAll().Where(u => u.IsActive== true);
+            new_loan.books = _reposB.GetAll().Where(u => u.IsActive == true);
             return PartialView("Agregar", new_loan);
         }
     }

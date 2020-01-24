@@ -38,7 +38,7 @@ namespace IntegonBook.Controllers
                         join u in users on l.UserID equals u.ID
                         join s in status on l.StatusId equals s.Id
                         join b in books on l.IdBook equals b.Id
-                        select new { l.Id, u.Name, u.LastName, l.DateCreate, l.DateFinish, b.Title, s.status, l.StatusId, l.Debt };
+                        select new { l.Id,l.UserID,l.IdBook, u.Name, u.LastName, l.DateCreate, l.DateFinish, b.Title, s.status, l.StatusId, l.Debt };
             query = query.Where(l => l.StatusId == 4 || l.StatusId == 5).ToList();
             return query;
         }
